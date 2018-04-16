@@ -12,6 +12,15 @@
 
 import * as express from 'express';
 import * as path from 'path';
+import { AuthService } from './services/auth.service';
+import { StrategyService } from './services/strategy.service';
+import * as passport from 'passport';
+import * as session from 'express-session';
+import * as uuid from 'uuid';
+import * as bodyParser from 'body-parser';
+import * as compression from 'compression';
+import * as cookieParser from 'cookie-parser';
+import * as jwt from 'jsonwebtoken';
 
 class App {
   public express;
@@ -22,16 +31,63 @@ class App {
   }
 
   private mountRoutes(): void {
+    const authService = new AuthService({});
     const app = express();
     const router = express.Router();
     const staticRoot = path.resolve(__dirname, '../../dist');
     app.use(express.static(staticRoot));
+    app.use(session({
+      name: 'APP_V1',
+      secret: 'secret',
+      cookie: {
+        path: '/',
+        httpOnly: true,
+        secure: false,
+        maxAge: null // browser-session cookie by default
+      },
+      resave: false,
+      saveUninitialized: false
+    }));
+    app.use(bodyParser.json());
+    app.use(bodyParser.urlencoded({extended: true}));
+    app.use(passport.initialize());
+    app.use(passport.session());
+    const strategy = new StrategyService((user: any, next: any) => {
+      next(user, undefined);
+    }, {});
+    passport.use(strategy);
+    // Configure how Passport serializes the user object
+    // to the session (we'll serialize everything):
+    passport.serializeUser((user, done) => {
+      done(null, user);
+    });
+    passport.deserializeUser((user, done) => {
+      done(null, user);
+    });
     app.get('/', (req, res) => {
       res.sendFile('index.html', { root: staticRoot });
     });
-    app.get('/api', (req, res) => {
+    app.post('/api/v1/token', (req, res) => {
+      const token = jwt.sign({
+        name: 'alex'
+      }, 'xyz');
       res.json({
-        message: 'Hello World!'
+        accessToken: token
+      });
+    });
+    app.post('/api/v1/login', authService.handleAuth, (req, res) => {
+      res.json({
+        isAuthenticated: true
+      });
+    });
+    app.post('/api/v1/logout', authService.logout, (req, res) => {
+      res.json({
+        isAuthenticated: false
+      });
+    });
+    app.get('/api/v1/authenticate', authService.checkAuthenticated, (req, res) => {
+      res.json({
+        isAuthenticated: true
       });
     });
     this.express.use('/', app);

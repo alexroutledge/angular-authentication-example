@@ -17,17 +17,31 @@ import { LOCATION_INITIALIZED } from '@angular/common';
 import { AppComponent } from './app.component';
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
-import { HttpClient, HttpClientModule } from '@angular/common/http';
+import { HttpClient, HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { TranslateService } from '@ngx-translate/core';
 import { ROUTES } from './app.routes';
 import { RouterModule } from '@angular/router';
 import 'hammerjs';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../environments/environment';
+import { HomeComponent } from './home/home.component';
+import { AuthGuardService } from './services/auth-guard.service';
+import { LoginComponent } from './login/login.component';
+import { HttpInterceptorService } from './services/http-interceptor.service';
+import { Router } from '@angular/router';
+
+const HttpInterceptorServiceProvider = {
+  provide: HTTP_INTERCEPTORS,
+  useClass: HttpInterceptorService,
+  deps: [Router],
+  multi: true
+};
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    HomeComponent,
+    LoginComponent
   ],
   imports: [
     BrowserModule,
@@ -48,7 +62,9 @@ import { environment } from '../environments/environment';
       useFactory: appInitializerFactory,
       deps: [TranslateService, Injector],
       multi: true
-    }
+    },
+    AuthGuardService,
+    HttpInterceptorServiceProvider
   ],
   bootstrap: [AppComponent]
 })

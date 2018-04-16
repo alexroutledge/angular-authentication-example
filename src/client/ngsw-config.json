@@ -1,7 +1,7 @@
 {
     "index": "/index.html",
     "assetGroups": [{
-      "name": "angular-starter-kit",
+      "name": "angular-authentication-example",
       "installMode": "prefetch",
       "resources": {
         "files": [
