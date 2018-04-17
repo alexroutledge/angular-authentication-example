@@ -26,11 +26,13 @@ import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../environments/environment';
 import { HomeComponent } from './home/home.component';
 import { AuthGuardService } from './services/auth-guard.service';
+import { RoleGuardService } from './services/role-guard.service';
 import { LoginComponent } from './login/login.component';
 import { HttpInterceptorService } from './services/http-interceptor.service';
 import { UserService } from './services/user.service';
 import { Router } from '@angular/router';
 import { HasPermissionDirective } from './has-permission.directive';
+import { AdminComponent } from './admin/admin.component';
 
 const HttpInterceptorServiceProvider = {
   provide: HTTP_INTERCEPTORS,
@@ -44,7 +46,8 @@ const HttpInterceptorServiceProvider = {
     AppComponent,
     HomeComponent,
     LoginComponent,
-    HasPermissionDirective
+    HasPermissionDirective,
+    AdminComponent
   ],
   imports: [
     BrowserModule,
@@ -67,6 +70,7 @@ const HttpInterceptorServiceProvider = {
       multi: true
     },
     AuthGuardService,
+    RoleGuardService,
     HttpInterceptorServiceProvider,
     UserService
   ],

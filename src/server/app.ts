@@ -21,6 +21,7 @@ import * as bodyParser from 'body-parser';
 import * as compression from 'compression';
 import * as cookieParser from 'cookie-parser';
 import * as jwt from 'jsonwebtoken';
+import { includes } from 'lodash';
 
 class App {
   public express;
@@ -93,6 +94,13 @@ class App {
     });
     app.get('/api/v1/user', authService.checkAuthenticated, (req, res) => {
       res.json(req.user);
+    });
+    app.get('/api/v1/roles/:permission', authService.checkAuthenticated, (req, res) => {
+      if (includes(req.user.roles, req.params.permission)) {
+        res.json(req.user);
+      } else {
+        res.send(422);
+      }
     });
     this.express.use('/', app);
   }

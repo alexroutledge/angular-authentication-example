@@ -1,4 +1,4 @@
-<!--
+/*
  * Copyright (c) 2018 Company Name.
  * All rights reserved.
  *
@@ -8,14 +8,14 @@
  * Other names may be trademarks of their respective owners.
  *
  * WATERMARK
--->
-<p>
-  Currently logged in
-</p>
-<button (click)="logOut()">Log out</button>
-<div *hasPermission="['write']">
-  write permission
-</div>
-<div *hasPermission="['admin']">
-  admin permission
-</div>
+ */
+import { Component, OnInit } from '@angular/core';
+
+@Component({
+  selector: 'angular-authentication-example-admin',
+  templateUrl: './admin.component.html',
+  styleUrls: ['./admin.component.scss']
+})
+export class AdminComponent {
+
+}

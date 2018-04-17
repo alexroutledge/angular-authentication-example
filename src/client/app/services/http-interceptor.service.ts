@@ -20,6 +20,7 @@ import {
 } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
 import { Router } from '@angular/router';
+import { includes } from 'lodash';
 
 @Injectable()
 export class HttpInterceptorService {
@@ -34,7 +35,7 @@ export class HttpInterceptorService {
   public intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     return next.handle(request)
       .catch((error: HttpErrorResponse) => {
-        if (error.status === 401) {
+        if (includes([401, 422], error.status)) {
           // The authentication session has expired or the user is not authorised.
           // Redirect the user to the session expired URL
           this.router.navigate(['/login']);
