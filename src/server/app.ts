@@ -69,7 +69,8 @@ class App {
     });
     app.post('/api/v1/token', (req, res) => {
       const token = jwt.sign({
-        name: 'alex'
+        name: 'alex',
+        roles: ['write']
       }, 'xyz');
       res.json({
         accessToken: token
@@ -89,6 +90,9 @@ class App {
       res.json({
         isAuthenticated: true
       });
+    });
+    app.get('/api/v1/user', authService.checkAuthenticated, (req, res) => {
+      res.json(req.user);
     });
     this.express.use('/', app);
   }

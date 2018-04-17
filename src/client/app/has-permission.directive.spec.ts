@@ -1,4 +1,4 @@
-<!--
+/*
  * Copyright (c) 2018 Company Name.
  * All rights reserved.
  *
@@ -8,14 +8,13 @@
  * Other names may be trademarks of their respective owners.
  *
  * WATERMARK
--->
-<p>
-  Currently logged in
-</p>
-<button (click)="logOut()">Log out</button>
-<div *hasPermission="['write']">
-  write permission
-</div>
-<div *hasPermission="['read']">
-  read permission
-</div>
+ */
+
+import { HasPermissionDirective } from './has-permission.directive';
+
+describe('HasPermissionDirective', () => {
+  it('should create an instance', () => {
+    const directive = new HasPermissionDirective();
+    expect(directive).toBeTruthy();
+  });
+});

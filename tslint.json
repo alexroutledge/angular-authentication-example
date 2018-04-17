@@ -29,7 +29,7 @@
     "directive-selector": [
       true,
       "attribute",
-      "angular-authentication-example",
+      "",
       "camelCase"
     ],
     "import-blacklist": [

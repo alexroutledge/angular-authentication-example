@@ -28,7 +28,9 @@ import { HomeComponent } from './home/home.component';
 import { AuthGuardService } from './services/auth-guard.service';
 import { LoginComponent } from './login/login.component';
 import { HttpInterceptorService } from './services/http-interceptor.service';
+import { UserService } from './services/user.service';
 import { Router } from '@angular/router';
+import { HasPermissionDirective } from './has-permission.directive';
 
 const HttpInterceptorServiceProvider = {
   provide: HTTP_INTERCEPTORS,
@@ -41,7 +43,8 @@ const HttpInterceptorServiceProvider = {
   declarations: [
     AppComponent,
     HomeComponent,
-    LoginComponent
+    LoginComponent,
+    HasPermissionDirective
   ],
   imports: [
     BrowserModule,
@@ -64,7 +67,8 @@ const HttpInterceptorServiceProvider = {
       multi: true
     },
     AuthGuardService,
-    HttpInterceptorServiceProvider
+    HttpInterceptorServiceProvider,
+    UserService
   ],
   bootstrap: [AppComponent]
 })

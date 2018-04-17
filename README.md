@@ -1,4 +1,4 @@
-# Angular Starter Kit App
+# Angular Authentication Example App
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 1.7.3.
 
