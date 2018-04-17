@@ -22,6 +22,7 @@ import * as compression from 'compression';
 import * as cookieParser from 'cookie-parser';
 import * as jwt from 'jsonwebtoken';
 import { includes } from 'lodash';
+import * as lusca from 'lusca';
 
 class App {
   public express;
@@ -53,6 +54,12 @@ class App {
     app.use(bodyParser.urlencoded({extended: true}));
     app.use(passport.initialize());
     app.use(passport.session());
+    app.use(lusca.xframe('DENY'));
+    app.use(lusca.xssProtection(true));
+    app.use(lusca.csrf({
+      header: 'XSRF-TOKEN',
+      cookie: { name: 'XSRF-TOKEN' }
+    }));
     const strategy = new StrategyService((user: any, next: any) => {
       next(user, undefined);
     }, {});
@@ -86,6 +93,9 @@ class App {
       res.json({
         isAuthenticated: false
       });
+    });
+    app.get('/api/v1/config', (req, res) => {
+      res.json({});
     });
     app.get('/api/v1/authenticate', authService.checkAuthenticated, (req, res) => {
       res.json({

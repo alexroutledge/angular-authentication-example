@@ -17,7 +17,7 @@ import { LOCATION_INITIALIZED } from '@angular/common';
 import { AppComponent } from './app.component';
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
-import { HttpClient, HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { HttpClient, HttpClientModule, HTTP_INTERCEPTORS, HttpClientXsrfModule } from '@angular/common/http';
 import { TranslateService } from '@ngx-translate/core';
 import { ROUTES } from './app.routes';
 import { RouterModule } from '@angular/router';
@@ -52,6 +52,7 @@ const HttpInterceptorServiceProvider = {
   imports: [
     BrowserModule,
     HttpClientModule,
+    HttpClientXsrfModule.withOptions({cookieName: 'XSRF-TOKEN', headerName: 'XSRF-TOKEN'}),
     TranslateModule.forRoot({
       loader: {
         provide: TranslateLoader,

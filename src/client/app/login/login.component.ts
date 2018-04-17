@@ -27,7 +27,11 @@ export class LoginComponent {
   public logIn() {
     let headers = new HttpHeaders();
     headers = headers.append('Content-Type', 'application/x-www-form-urlencoded');
-    this.http.post('/api/v1/token', '', { headers }).pipe(
+    this.http.get('/api/v1/config', { headers })
+    .pipe(
+      mergeMap((res: any) => this.http.post('/api/v1/token', '', { headers })
+    ))
+    .pipe(
       mergeMap((res: any) => this.http.post(`/api/v1/login`, `accessToken=${res.accessToken}`, { headers })
     ))
     .subscribe(() => {
